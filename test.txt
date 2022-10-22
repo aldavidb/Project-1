@@ -13,7 +13,6 @@
 *
 * CUSTOMER DATA INPUT BUFFER
 *
-******************************************************************
 $IBUFFR  DSECT               INPUT BUFFER FORMAT
 $ICSTID  DS    CL8           CUSTOMER ID
          DS    C
@@ -149,12 +148,12 @@ MAIN     CSECT
 *
 ******************************************************************
 *
-         USING $IBUFFR,2
-         USING $CUSTINF,3
-         USING $ORDIN,6
-         USING $ORDTBL,7
-         USING $IFSC,9
-         USING $FSCTBL,10
+         USING $IBUFFR,2                USING DSECT STATEMENT CUSTOMER INPUT BUFFER -> REG2
+         USING $CUSTINF,3               USING DSECT STATEMENT CUSTOMER TABLE -> REG3
+         USING $ORDIN,6                 USING DSECT STATEMENT ORDER INPUT -> REG6
+         USING $ORDTBL,7                USING DSECT STATEMENT ORDER TABLE -> REG7
+         USING $IFSC,9                  USING DSECT STATEMENT FISCAL INPUT -> REG9
+         USING $FSCTBL,10               USING DSECT STATEMENT FISCAL TABLE -> REG10
 *
 ******************************************************************
 *
@@ -162,9 +161,9 @@ MAIN     CSECT
 *
 ******************************************************************
 *
-         LA    2,IBUFFER
-         LA    3,CUSTTBL
-         XREAD IBUFFER,80
+         LA    2,IBUFFER                LOAD INPUT BUFFER TO REG2
+         LA    3,CUSTTBL                LOAD CUSTOMER TABLE TO REG3
+         XREAD IBUFFER,80               PRIMING READ
 *
 ******************************************************************
 *
@@ -173,18 +172,18 @@ MAIN     CSECT
 ******************************************************************
 *
 CUSREAD  DS    0H
-         CLI   IBUFFER,C'*'
-         BE    ENDCUS
+         CLI   IBUFFER,C'*'             CHECKS TO SEE IF IMMEDIATE CHARACTER = *
+         BE    ENDCUS                   BRANCH TO ENDORD LOOP WHEN CONDITION MET
 *
-         XDECI 4,$ICSTID
-         ST    4,$CUSTID
-         MVC   $CUSTNM(20),$ICUSTNM
-         MVC   $SHPADDR(30),$ISHPADR
-         XDECI 4,$IRGSLTX
-         ST    4,$RGSLSTX
-         LA    3,60(,3)
-         XREAD IBUFFER,80
-         B     CUSREAD
+         XDECI 4,$ICSTID                READING CUSTOMER ID
+         ST    4,$CUSTID                STORING CUSTOMER ID
+         MVC   $CUSTNM(20),$ICUSTNM     MOVING NAME OF CUSTOMER
+         MVC   $SHPADDR(30),$ISHPADR    MOVING SHIPPING ADDRESS FOR CUSTOMER
+         XDECI 4,$IRGSLTX               READ VALUE OF REGIONAL SALES TAX
+         ST    4,$RGSLSTX               STORE VALUE OF REGIONAL SALES TAX
+         LA    3,60(,3)                 LOAD NEXT ROW IN TABLE
+         XREAD IBUFFER,80               NEXT READ
+         B     CUSREAD                  BRANCH BACK TO TOP OF LOOP
 *
 ******************************************************************
 *
@@ -195,9 +194,9 @@ CUSREAD  DS    0H
 ******************************************************************
 *
 ENDCUS   DS    0H
-         LA    6,IBUFFER
-         LA    7,ORDTBL
-         XREAD IBUFFER,80
+         LA    6,IBUFFER            LOADING INPUT BUFFER INTO REG6
+         LA    7,ORDTBL             LOADING ORDER TABLE INTO REG7
+         XREAD IBUFFER,80           PRIMING READ
 *
 ******************************************************************
 *
@@ -206,26 +205,26 @@ ENDCUS   DS    0H
 ******************************************************************
 *
 ORDREAD  DS    0H
-         CLI   IBUFFER,C'*'
-         BE    ENDORD
+         CLI   IBUFFER,C'*'         CHECKS TO SEE IF IMMEDIATE CHARACTER = *
+         BE    ENDORD               BRANCH TO ENDORD LOOP WHEN CONDITION MET
 *
-         XDECI 4,$ICUST
-         ST    4,$CSTID
-         XDECI 4,$IORDID
-         ST    4,$ORDID
-         XDECI 4,$IMONTH
-         ST    4,$MONTH
-         XDECI 4,$IDAY
-         ST    4,$DAY
-         XDECI 4,$ISUBTOT
-         ST    4,$SUBTOTL
-         XDECI 4,$ISHIPP
-         ST    4,$SHPPNG
-         MVC   $PAYMETH(10),$IPAY
-         MVC   $STATUS(6),$ISTAT
-         LA    7,40(,7)
-         XREAD IBUFFER,80
-         B     ORDREAD
+         XDECI 4,$ICUST             STORING VALUE OF CUSTOMER ID
+         ST    4,$CSTID             STORING VALUE OF CUSTOMER ID
+         XDECI 4,$IORDID            READING VALUE OF ORDER ID
+         ST    4,$ORDID             STORING VALUE OF ORDER ID
+         XDECI 4,$IMONTH            READING VALUE OF MONTH
+         ST    4,$MONTH             STORING VALUE OF MONTH
+         XDECI 4,$IDAY              READING VALUE OF DAY
+         ST    4,$DAY               STORING VALUE OF DAY
+         XDECI 4,$ISUBTOT           READING VALUE OF SUBTOTAL
+         ST    4,$SUBTOTL           STORING VALUE OF SUBTOTAL
+         XDECI 4,$ISHIPP            READING VALUE OF SHIPPING COST
+         ST    4,$SHPPNG            STORING VALUE OF SHIPPING COST
+         MVC   $PAYMETH(10),$IPAY   MOVING PAYMENT METHOD OF ORDER
+         MVC   $STATUS(6),$ISTAT    MOVING CHARACTERS FOR STATUS OF ORDER
+         LA    7,40(,7)             LOAD THE NEXT ROW OF ORDER TABLE
+         XREAD IBUFFER,80           NEXT READ
+         B     ORDREAD              BRANCH UP TO TOP OF LOOP
 *
 ******************************************************************
 *
@@ -236,9 +235,9 @@ ORDREAD  DS    0H
 ******************************************************************
 *
 ENDORD   DS    0H
-         LA    9,IBUFFER
-         LA    10,FISCTBL
-         XREAD IBUFFER,80
+         LA    9,IBUFFER      LOAD THE INPUT BUFFER INTO REG9
+         LA    10,FISCTBL     LOAD FISCAL TABLE INTO REG10
+         XREAD IBUFFER,80     PRIMING READ
 *
 ******************************************************************
 *
@@ -247,19 +246,19 @@ ENDORD   DS    0H
 ******************************************************************
 *
 FSCREAD  DS    0H
-         BNZ   ENDREAD
+         BNZ   ENDREAD        BRANCH IF NOTHING LEFT TO READ
 *
-         XDECI 4,$IMNTH
-         ST    4,$MNTH
-         XDECI 4,$IPREDCT
-         ST    4,$PREDCT
-         XDECI 4,$ILOWER
-         ST    4,$LOWER
-         XDECI 4,$IUPPER
-         ST    4,$UPPER
-         LA    10,16(,10)
-         XREAD IBUFFER,80
-         B     FSCREAD
+         XDECI 4,$IMNTH       READING MONTH
+         ST    4,$MNTH        STORING MONTH
+         XDECI 4,$IPREDCT     READING PREDICTED TOTAL OF MONTH
+         ST    4,$PREDCT      STORING PREDICTED TOTAL OF MONTH
+         XDECI 4,$ILOWER      READING VALUE OF LOWER BOUND
+         ST    4,$LOWER       STORING VALUE OF LOWER BOUND
+         XDECI 4,$IUPPER      READING VALUE OF UPPER BOUND
+         ST    4,$UPPER       STORING VALUE OF UPPER BOUND
+         LA    10,16(,10)     LOADING IN NEXT ROW IN TABLE
+         XREAD IBUFFER,80     NEXT READ
+         B     FSCREAD        BRANCH BACK TO TOP OF LOOP
 *
 ******************************************************************
 *
