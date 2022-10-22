@@ -12,6 +12,7 @@
 ******************************************************************
 *
 *
+*
 $IBUFFR  DSECT               INPUT BUFFER FORMAT
 $ICSTID  DS    CL8           CUSTOMER ID
          DS    C
