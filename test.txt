@@ -4,7 +4,7 @@
 //SYSPRINT DD SYSOUT=*
 //SYSIN    DD *
 ******************************************************************
-* CSCI360-2                 PROJECT1                   FALL 2022 *
+* CSCI360-2                 PROJECT1                    FALL 2022*
 *                                                                *
 *NAME: ALEX BERTOLASI                                            *
 *DATE: 10/17/22                                                  *
