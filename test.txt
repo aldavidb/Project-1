@@ -4,7 +4,7 @@
 //SYSPRINT DD SYSOUT=*
 //SYSIN    DD *
 ******************************************************************
-* CSCI360-2                 PROJECT1                    FALL 2022*
+* CSCI360-2                 PROJECT1                   FALL 2022 *
 *                                                                *
 *NAME: ALEX BERTOLASI                                            *
 *DATE: 10/17/22                                                  *
@@ -13,14 +13,15 @@
 *
 * CUSTOMER DATA INPUT BUFFER
 *
-$IBUFFR  DSECT               INPUT BUFFER FORMAT
-$ICSTID  DS    CL8           CUSTOMER ID
+******************************************************************
+$IBUFFR  DSECT                INPUT BUFFER FORMAT
+$ICSTID  DS    CL8            CUSTOMER ID
          DS    C
-$ICUSTNM DS    CL20          CUSTOMER NAME
+$ICUSTNM DS    CL20           CUSTOMER NAME
          DS    C
-$ISHPADR DS    CL30          SHIPPING ADDRESS
+$ISHPADR DS    CL30           SHIPPING ADDRESS
          DS    C
-$IRGSLTX DS    CL4           REGIONAL SALES TAX
+$IRGSLTX DS    CL4            REGIONAL SALES TAX
 *
 ******************************************************************
 *
@@ -28,12 +29,12 @@ $IRGSLTX DS    CL4           REGIONAL SALES TAX
 *
 ******************************************************************
 *
-$CUSTINF DSECT               CUSTOMER TABLE FORMAT
-$CUSTID  DS    F
-         DS    CL2
-$CUSTNM  DS    CL20
-$SHPADDR DS    CL30
-$RGSLSTX DS    F
+$CUSTINF DSECT                CUSTOMER TABLE FORMAT
+$CUSTID  DS    F              CUSTOMER ID
+         DS    CL2            (ENFORCE FULLWORD FOR RGSLSTX)
+$CUSTNM  DS    CL20           CUSTOMER NAME
+$SHPADDR DS    CL30           SHIPPING ADRESS
+$RGSLSTX DS    F              REGIONAL SALES TAX
 *
 ******************************************************************
 *
@@ -41,22 +42,22 @@ $RGSLSTX DS    F
 *
 ******************************************************************
 *
-$ORDIN   DSECT               ORDER INFORMATION
-$ICUST   DS    CL8           CUSTOMER ID
+$ORDIN   DSECT                ORDER INFORMATION
+$ICUST   DS    CL8            CUSTOMER ID
          DS    C
-$IORDID  DS    CL8           ORDER ID
+$IORDID  DS    CL8            ORDER ID
          DS    C
-$IMONTH  DS    CL2           MONTH OF ORDER
+$IMONTH  DS    CL2            MONTH OF ORDER
          DS    C
-$IDAY    DS    CL2           DAY OF ORDER
+$IDAY    DS    CL2            DAY OF ORDER
          DS    C
-$ISUBTOT DS    CL6           SUBTOTAL OF ORDER
+$ISUBTOT DS    CL6            SUBTOTAL OF ORDER
          DS    C
-$ISHIPP  DS    CL4           SHIPPING OF ORDER
+$ISHIPP  DS    CL4            SHIPPING OF ORDER
          DS    C
-$IPAY    DS    CL10          PAYMENT METHOD
+$IPAY    DS    CL10           PAYMENT METHOD
          DS    C
-$ISTAT   DS    CL6           STATUS OF ORDER
+$ISTAT   DS    CL6            STATUS OF ORDER
          DS    C
 *
 ******************************************************************
@@ -65,15 +66,15 @@ $ISTAT   DS    CL6           STATUS OF ORDER
 *
 ******************************************************************
 *
-$ORDTBL  DSECT               ORDER TBALE FORMAT
-$CSTID   DS    F             CUSTOMER ID
-$ORDID   DS    F             ORDER ID
-$MONTH   DS    F             MONTH OF ORDER
-$DAY     DS    F             DAY OF ORDER
-$SUBTOTL DS    F             SUBTOTAL OF ORDER
-$SHPPNG  DS    F             SHPPING INFO
-$PAYMETH DS    CL10          PAYMENT METHOD
-$STATUS  DS    CL6           STATUS OF ORDER
+$ORDTBL  DSECT                ORDER TBALE FORMAT
+$CSTID   DS    F              CUSTOMER ID
+$ORDID   DS    F              ORDER ID
+$MONTH   DS    F              MONTH OF ORDER
+$DAY     DS    F              DAY OF ORDER
+$SUBTOTL DS    F              SUBTOTAL OF ORDER
+$SHPPNG  DS    F              SHPPING INFO
+$PAYMETH DS    CL10           PAYMENT METHOD
+$STATUS  DS    CL6            STATUS OF ORDER
 *
 ******************************************************************
 *
@@ -81,14 +82,14 @@ $STATUS  DS    CL6           STATUS OF ORDER
 *
 ******************************************************************
 *
-$IFSC    DSECT               FISCAL INPUT
-$IMNTH   DS    CL2           MONTH
+$IFSC    DSECT                FISCAL INPUT
+$IMNTH   DS    CL2            MONTH
          DS    C
-$IPREDCT DS    CL9          PREDICTED AMOUNT
+$IPREDCT DS    CL9            PREDICTED AMOUNT
          DS    C
-$ILOWER  DS    CL9          LOWER BOUND
+$ILOWER  DS    CL9            LOWER BOUND
          DS    C
-$IUPPER  DS    CL9          UPPER BOUND
+$IUPPER  DS    CL9            UPPER BOUND
          DS    C
 *
 ******************************************************************
@@ -97,11 +98,11 @@ $IUPPER  DS    CL9          UPPER BOUND
 *
 ******************************************************************
 *
-$FSCTBL  DSECT               FISCAL TABLE FORMAT
-$MNTH    DS    F             MONTH
-$PREDCT  DS    F             PREDICTED FISCAL AMOUNT
-$LOWER   DS    F             LOWER BOUND
-$UPPER   DS    F             UPPER BOUND
+$FSCTBL  DSECT                FISCAL TABLE FORMAT
+$MNTH    DS    F              MONTH
+$PREDCT  DS    F              PREDICTED FISCAL AMOUNT
+$LOWER   DS    F              LOWER BOUND
+$UPPER   DS    F              UPPER BOUND
 *
 ******************************************************************
 *
@@ -148,12 +149,12 @@ MAIN     CSECT
 *
 ******************************************************************
 *
-         USING $IBUFFR,2                USING DSECT STATEMENT CUSTOMER INPUT BUFFER -> REG2
-         USING $CUSTINF,3               USING DSECT STATEMENT CUSTOMER TABLE -> REG3
-         USING $ORDIN,6                 USING DSECT STATEMENT ORDER INPUT -> REG6
-         USING $ORDTBL,7                USING DSECT STATEMENT ORDER TABLE -> REG7
-         USING $IFSC,9                  USING DSECT STATEMENT FISCAL INPUT -> REG9
-         USING $FSCTBL,10               USING DSECT STATEMENT FISCAL TABLE -> REG10
+         USING $IBUFFR,2      USING DSECT CUSTOMER INPUT BUFFER -> R2
+         USING $CUSTINF,3     USING DSECT CUSTOMER TABLE -> R3
+         USING $ORDIN,6       USING DSECT ORDER INPUT -> R6
+         USING $ORDTBL,7      USING DSECT ORDER TABLE -> R7
+         USING $IFSC,9        USING DSECT FISCAL INPUT -> R9
+         USING $FSCTBL,10     USING DSECT FISCAL TABLE -> R10
 *
 ******************************************************************
 *
@@ -161,9 +162,9 @@ MAIN     CSECT
 *
 ******************************************************************
 *
-         LA    2,IBUFFER                LOAD INPUT BUFFER TO REG2
-         LA    3,CUSTTBL                LOAD CUSTOMER TABLE TO REG3
-         XREAD IBUFFER,80               PRIMING READ
+         LA    2,IBUFFER      LOAD IBUFFER INTO R2
+         LA    3,CUSTTBL      LOAD CUSTOMER TABLE INTO R3
+         XREAD IBUFFER,80     PRIMING READ
 *
 ******************************************************************
 *
@@ -172,18 +173,18 @@ MAIN     CSECT
 ******************************************************************
 *
 CUSREAD  DS    0H
-         CLI   IBUFFER,C'*'             CHECKS TO SEE IF IMMEDIATE CHARACTER = *
-         BE    ENDCUS                   BRANCH TO ENDORD LOOP WHEN CONDITION MET
+         CLI   IBUFFER,C'*'   COMPARE IBUFFER WITH IMMEDIATE CHAR '*'
+         BE    ENDCUS         BRANCH OUT IF INPUT REACH '*' CHAR
 *
-         XDECI 4,$ICSTID                READING CUSTOMER ID
-         ST    4,$CUSTID                STORING CUSTOMER ID
-         MVC   $CUSTNM(20),$ICUSTNM     MOVING NAME OF CUSTOMER
-         MVC   $SHPADDR(30),$ISHPADR    MOVING SHIPPING ADDRESS FOR CUSTOMER
-         XDECI 4,$IRGSLTX               READ VALUE OF REGIONAL SALES TAX
-         ST    4,$RGSLSTX               STORE VALUE OF REGIONAL SALES TAX
-         LA    3,60(,3)                 LOAD NEXT ROW IN TABLE
-         XREAD IBUFFER,80               NEXT READ
-         B     CUSREAD                  BRANCH BACK TO TOP OF LOOP
+         XDECI 4,$ICSTID      READING CUSTOMER ID
+         ST    4,$CUSTID      STORING CUSTOMER ID
+         MVC   $CUSTNM(20),$ICUSTNM    MOVING NAME OF CUSTOMER
+         MVC   $SHPADDR(30),$ISHPADR   MOVING SHIPPING ADDR FOR CUST
+         XDECI 4,$IRGSLTX     READ VALUE OF REGIONAL SALES TAX
+         ST    4,$RGSLSTX     STORE VALUE OF REGIONAL SALES TAX
+         LA    3,60(,3)       LOAD NEXT ROW IN TABLE
+         XREAD IBUFFER,80     READ NEXT
+         B     CUSREAD        BRANCH TO TOP OF LOOP
 *
 ******************************************************************
 *
@@ -194,9 +195,9 @@ CUSREAD  DS    0H
 ******************************************************************
 *
 ENDCUS   DS    0H
-         LA    6,IBUFFER            LOADING INPUT BUFFER INTO REG6
-         LA    7,ORDTBL             LOADING ORDER TABLE INTO REG7
-         XREAD IBUFFER,80           PRIMING READ
+         LA    6,IBUFFER      LOADING INPUT BUFFER INTO R6
+         LA    7,ORDTBL       LOADING ORDER TABLE INTO R7
+         XREAD IBUFFER,80     PRIMING READ
 *
 ******************************************************************
 *
@@ -205,26 +206,26 @@ ENDCUS   DS    0H
 ******************************************************************
 *
 ORDREAD  DS    0H
-         CLI   IBUFFER,C'*'         CHECKS TO SEE IF IMMEDIATE CHARACTER = *
-         BE    ENDORD               BRANCH TO ENDORD LOOP WHEN CONDITION MET
+         CLI   IBUFFER,C'*'   COMPARE IBUFFER WITH IMMEDIATE CHAR '*'
+         BE    ENDORD         BRANCH OUT IF INPUT REACH '*' CHAR
 *
-         XDECI 4,$ICUST             STORING VALUE OF CUSTOMER ID
-         ST    4,$CSTID             STORING VALUE OF CUSTOMER ID
-         XDECI 4,$IORDID            READING VALUE OF ORDER ID
-         ST    4,$ORDID             STORING VALUE OF ORDER ID
-         XDECI 4,$IMONTH            READING VALUE OF MONTH
-         ST    4,$MONTH             STORING VALUE OF MONTH
-         XDECI 4,$IDAY              READING VALUE OF DAY
-         ST    4,$DAY               STORING VALUE OF DAY
-         XDECI 4,$ISUBTOT           READING VALUE OF SUBTOTAL
-         ST    4,$SUBTOTL           STORING VALUE OF SUBTOTAL
-         XDECI 4,$ISHIPP            READING VALUE OF SHIPPING COST
-         ST    4,$SHPPNG            STORING VALUE OF SHIPPING COST
-         MVC   $PAYMETH(10),$IPAY   MOVING PAYMENT METHOD OF ORDER
-         MVC   $STATUS(6),$ISTAT    MOVING CHARACTERS FOR STATUS OF ORDER
-         LA    7,40(,7)             LOAD THE NEXT ROW OF ORDER TABLE
-         XREAD IBUFFER,80           NEXT READ
-         B     ORDREAD              BRANCH UP TO TOP OF LOOP
+         XDECI 4,$ICUST       READING VALUE OF CUSTOMER ID
+         ST    4,$CSTID       STORING VALUE OF CUSTOMER ID
+         XDECI 4,$IORDID      READING VALUE OF ORDER ID
+         ST    4,$ORDID       STORING VALUE OF ORDER ID
+         XDECI 4,$IMONTH      READING VALUE OF MONTH
+         ST    4,$MONTH       STORING VALUE OF MONTH
+         XDECI 4,$IDAY        READING VALUE OF DAY
+         ST    4,$DAY         STORING VALUE OF DAY
+         XDECI 4,$ISUBTOT     READING VALUE OF SUBTOTAL
+         ST    4,$SUBTOTL     STORING VALUE OF SUBTOTAL
+         XDECI 4,$ISHIPP      READING VALUE OF SHIPPING COST
+         ST    4,$SHPPNG      STORING VALUE OF SHIPPING COST
+         MVC   $PAYMETH(10),$IPAY      MOVING PAYMENT METHOD OF ORDER
+         MVC   $STATUS(6),$ISTAT       MOVING CHARS FOR STATUS OF ORDER
+         LA    7,40(,7)       LOAD THE NEXT ROW OF ORDER TABLE
+         XREAD IBUFFER,80     READ NEXT
+         B     ORDREAD        BRANCH TO TOP OF LOOP
 *
 ******************************************************************
 *
@@ -235,8 +236,8 @@ ORDREAD  DS    0H
 ******************************************************************
 *
 ENDORD   DS    0H
-         LA    9,IBUFFER      LOAD THE INPUT BUFFER INTO REG9
-         LA    10,FISCTBL     LOAD FISCAL TABLE INTO REG10
+         LA    9,IBUFFER      LOAD THE INPUT BUFFER INTO R9
+         LA    10,FISCTBL     LOAD FISCAL PREDICTION TABLE INTO R10
          XREAD IBUFFER,80     PRIMING READ
 *
 ******************************************************************
@@ -246,7 +247,7 @@ ENDORD   DS    0H
 ******************************************************************
 *
 FSCREAD  DS    0H
-         BNZ   ENDREAD        BRANCH IF NOTHING LEFT TO READ
+         BNZ   ENDREAD        BRANCH OUT IF NOTHING LEFT TO READ
 *
          XDECI 4,$IMNTH       READING MONTH
          ST    4,$MNTH        STORING MONTH
@@ -257,8 +258,8 @@ FSCREAD  DS    0H
          XDECI 4,$IUPPER      READING VALUE OF UPPER BOUND
          ST    4,$UPPER       STORING VALUE OF UPPER BOUND
          LA    10,16(,10)     LOADING IN NEXT ROW IN TABLE
-         XREAD IBUFFER,80     NEXT READ
-         B     FSCREAD        BRANCH BACK TO TOP OF LOOP
+         XREAD IBUFFER,80     READ NEXT
+         B     FSCREAD        BRANCH TO TOP OF LOOP
 *
 ******************************************************************
 *
@@ -294,19 +295,19 @@ PRGEXIT  LA    15,0           R15 = RETURN CODE OF 0
          LTORG
 *
 MAINSAVE DC    18F'-1'
-IBUFFER  DS    CL80          INPUT BUFFER
+IBUFFER  DS    CL80           INPUT BUFFER
          DC    C'*'
-OBUFFER  DC    C' '          USE SINGLE SPACING
-         DC    CL132' '      EMPTY SPACE OUTPUT BUFFER
+OBUFFER  DC    C' '           USE SINGLE SPACING
+         DC    CL132' '       EMPTY SPACE OUTPUT BUFFER
 *
          DS    0F
-CUSTTBL  DS    10CL60        CUSTOMER INFORMATION TABLE
+CUSTTBL  DS    10CL60         CUSTOMER INFORMATION TABLE
 *
          DS    0F
-ORDTBL   DS    30CL40        ORDER INFORMATION TABLE
+ORDTBL   DS    30CL40         ORDER INFORMATION TABLE
 *
          DS    0F
-FISCTBL  DS    12CL16        FICAL PREDICTIOM TABLE
+FISCTBL  DS    12CL16         FICAL PREDICTIOM TABLE
 *
          END   MAIN
 /*
